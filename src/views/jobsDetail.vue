@@ -32,39 +32,39 @@
           </button>
 
         <!-- <button data-bs-toggle="modal" :data-bs-target="'#exampleModalToggle' + detail.jobId" role="button" v-on:click="getDetail(detail.jobId)" class="ict">
-                                                                                  <img class="import-icon" src="../assets/icon-postjob/edit.svg" alt="">
-                                                                                </button> -->
+                                                                                                          <img class="import-icon" src="../assets/icon-postjob/edit.svg" alt="">
+                                                                                                        </button> -->
           <!-- modal editorData -->
           <div class="modal fade" :id="'exampleModalToggle' + detail.jobId" aria-hidden="true"
             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalToggleLabel">Edit Jobs</h5>
+                  <h5 class="modal-title" id="exampleModalToggleLabel">Edit Job</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <form @submit.prevent="updateJobData(detail.jobId)">
+                  <form @submit.prevent="submitForm">
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Job Name:</label>
                       <input type="text" class="form-control" id="" v-model="detail.jobName" required>
                     </div>
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Job Salary:</label>
-                      <input type="text" class="form-control" id="" v-model="detail.jobSalary" required>
+                      <input type="number" class="form-control" id="" v-model="detail.jobSalary" min="1" step="1"
+                        onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57" maxlength="8" @keyup="limitInput" required>
                     </div>
                     <div class="mb-3">
-                      <label for="recipient-name" class="col-form-label">Job Position edit: </label>
+                      <label for="recipient-name" class="col-form-label">Job position: </label>
                       <select class="form-control" id="inputState" v-model="detail.jobPosition" required>
-                        <option selected>Choose..</option>
+                        <option selected disabled>Choose..</option>
                         <option>Internship</option>
                         <option>Full time</option>
-                        <option>Part Time</option>
+                        <option>Part time</option>
                         <option>Contractual</option>
                         <option>Freelance</option>
                       </select>
                     </div>
-
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Job Requirement: </label>
                       <!-- <input type="text" class="form-control" id="recipient-name" v-model="edit.jobRequirement"> -->
@@ -80,7 +80,8 @@
                     </div>
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Job Address: </label>
-                      <input type="text" class="form-control" id="recipient-name" v-model="detail.jobAddress">
+                      <input type="text" class="form-control" id="recipient-name" maxlength="100"
+                        v-model="detail.jobAddress">
                     </div>
                     <div class="modal-footer">
                       <!-- <button class="btn btn-success" v-on:click="updateJobData(detail.jobId)">Update</button> -->
@@ -193,6 +194,25 @@ export default {
     moment: function (date) {
       return moment(date);
     },
+    submitForm() {
+      if (this.detail.jobRequirement.trim() === '') {
+        alert('Please fill Job Requirement!');
+        return;
+      }
+      if (this.detail.jobDesc.trim() === '') {
+        alert('Please fill Job description!');
+        return;
+      }
+
+      // call your updateJobData method with the editor content
+      this.updateJobData(this.detail.jobId, this.detail.jobDesc, this.detail.jobRequirement);
+    },
+    limitInput() {
+      if (this.detail.jobSalary.length > 8) {
+        this.detail.jobSalary = this.detail.jobSalary.slice(0, 8);
+      }
+    },
+
     formatPrice(value) {
       let val = (value / 1).toFixed().replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")

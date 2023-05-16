@@ -1,6 +1,6 @@
 <template>
     <div class="page-loader" v-if="!isloaded">
-        
+
         <div class="cube"></div>
         <div class="cube"></div>
         <div class="cube"></div>
@@ -9,84 +9,85 @@
 </template>
 
 <script>
-    export default {
-        data: () => {
-            return {
-                isloaded: false
+export default {
+    data: () => {
+        return {
+            isloaded: false
+        }
+    },
+    mounted() {
+        document.onreadystatechange = () => {
+            if (document.readyState == "complete") {
+                this.isloaded = true;
             }
-        },
-        mounted() {
-            document.onreadystatechange = () => {
-                if (document.readyState == "complete") {
-                    this.isloaded = true;
-                }
-            }
-        },
-    }
+        }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    $colors: #222fe6,
+$colors: #222fe6,
     #69BEEB,
     #9381ec,
     #4631fa;
 
-    img{
-        width: 100px;
-    }
-    // -----------------------------------------------------
-    .page-loader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(255, 255, 255, 0.793);
-        z-index: 1021;
-    }
+img {
+    width: 100px;
+}
 
-    // -----------------------------------------------------
-    .cube {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
+// -----------------------------------------------------
+.page-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.793);
+    z-index: 1021;
+}
 
-        @for $i from 1 through length($colors) {
-            &:nth-child(#{$i}) {
-                background-color: nth($colors, $i);
-            }
-        }
+// -----------------------------------------------------
+.cube {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 
-        &:first-child {
-            animation: left 1s infinite;
-        }
-
-        &:last-child {
-            animation: right 1s infinite .5s;
+    @for $i from 1 through length($colors) {
+        &:nth-child(#{$i}) {
+            background-color: nth($colors, $i);
         }
     }
 
-    // -----------------------------------------------------
-    @keyframes left {
-        40% {
-            transform: translateX(-60px);
-        }
-
-        50% {
-            transform: translateX(0);
-        }
+    &:first-child {
+        animation: left 1s infinite;
     }
 
-    @keyframes right {
-        40% {
-            transform: translateX(60px);
-        }
-
-        50% {
-            transform: translateX(0);
-        }
+    &:last-child {
+        animation: right 1s infinite 0.1s;
     }
+}
+
+// -----------------------------------------------------
+@keyframes left {
+    40% {
+        transform: translateX(-60px);
+    }
+
+    50% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes right {
+    40% {
+        transform: translateX(60px);
+    }
+
+    50% {
+        transform: translateX(0);
+    }
+}
 </style>

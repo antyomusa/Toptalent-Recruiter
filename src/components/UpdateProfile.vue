@@ -4,7 +4,7 @@
     <nav-mobile></nav-mobile>
     <div class="bg-color content">
       <button class="btn btn-primary new" onclick="history.back()"><i class="bi bi-chevron-left"></i>Go Back</button>
-      <form action="" @submit.prevent="updateProfile">
+      <form action="" @submit.prevent="submitForm">
 
 
         <div class="container section-first">
@@ -28,9 +28,10 @@
 
 
             <div class="mb-4">
-              <label for="validationDefault03" class="form-label">Industry</label>
-              <input type="text" class="form-control" id="validationDefault03" v-model="profile.recruiterIndustry"
-                required maxlength="30">
+              <label for="validationDefault03" class="form-label" id="industry">Industry</label>
+              <input type="text" class="form-control" v-bind:class="{ 'error': industryError }" id="recruiterIndustry"
+                v-model="profile.recruiterIndustry">
+              <span v-if="industryError" class="error-message text-danger">Please fill out this field.</span>
             </div>
             <div class="mb-4">
               <label for="validationDefault03" class="form-label">Benefit</label>
@@ -40,15 +41,17 @@
             </div>
 
             <div class="mb-4">
-              <label for="validationDefault03" class="form-label">Company</label>
-              <input type="text" class="form-control" id="validationDefault03" v-model="profile.recruiterCompany" required
-                maxlength="30">
+              <label for="validationDefault03" id="company" class="form-label">Company</label>
+              <input type="text" class="form-control" id="validationDefault03" v-bind:class="{ 'error': companyError }"
+                v-model="profile.recruiterCompany">
+              <span v-if="companyError" class="error-message text-danger">Please fill out this field.</span>
             </div>
 
             <div class="mb-4">
-              <label for="inputState" class="form-label">Staff</label>
+              <label for="inputState" id="staff" class="form-label">Staff</label>
               <!-- <input type="text" class="form-control" id="validationDefault03" v-model="profile.recruiterStaff" required> -->
-              <select class="form-control" id="inputState" v-model="profile.recruiterStaff" required>
+              <select class="form-control" id="inputState" v-bind:class="{ 'error': staffError }"
+                v-model="profile.recruiterStaff">
                 <option disabled selected>Choose..</option>
                 <option>1</option>
                 <option>2-10</option>
@@ -59,16 +62,19 @@
                 <option>1001-1000</option>
                 <option>10000+</option>
               </select>
+              <span v-if="staffError" class="error-message text-danger">Please fill out this field.</span>
             </div>
             <div class="mb-4">
-              <label for="validationDefault03" class="form-label">Description</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="profile.recruiterDesc"
-                required></textarea>
+              <label for="validationDefault03" id="description" class="form-label">Description</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" v-bind:class="{ 'error': descriptionError }"
+                rows="3" v-model="profile.recruiterDesc"></textarea>
+              <span v-if="descriptionError" class="error-message text-danger">Please fill out this field.</span>
             </div>
             <div class="mb-4">
-              <label for="validationDefault03" class="form-label">Address</label>
-              <input type="text" class="form-control" id="validationDefault03" v-model="profile.recruiterAddress" required
-                maxlength="200">
+              <label for="validationDefault03" id="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="validationDefault03" v-bind:class="{ 'error': addressError }"
+                v-model="profile.recruiterAddress" maxlength="200">
+              <span v-if="addressError" class="error-message text-danger">Please fill out this field.</span>
               <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" v-model="profile.recruiterAddress"></textarea> -->
             </div>
 
@@ -99,9 +105,10 @@
               <input type="text" class="form-control" id="validationDefault03" v-model="profile.recruiterLinkedin">
             </div>
             <div class="mb-4">
-              <label for="validationDefault03" class="form-label">Website</label>
-              <input class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="profile.recruiterWebsite"
-                required>
+              <label for="validationDefault03" class="form-label" id="website">Website</label>
+              <input class="form-control" id="exampleFormControlTextarea1" rows="3"
+                v-bind:class="{ 'error': websiteError }" v-model="profile.recruiterWebsite">
+              <span v-if="websiteError" class="error-message text-danger">Please fill out this field.</span>
             </div>
             <button class="btn btn-success btn-update" type="submit">Update</button>
           </div>
@@ -144,7 +151,6 @@ export default {
       // [{ list: "ordered" }, { list: "bullet" }],
       // ["image", "code-block"]
       // ],
-
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
@@ -167,7 +173,14 @@ export default {
         }
 
       },
-      profile: [null],
+      //profile: [null],
+
+      profile: {
+        recruiterIndustry: "",
+        recruiterCompany: ""
+      },
+      industryError: "",
+      companyError: "",
       value: '',
 
       bindProps: {
@@ -189,7 +202,7 @@ export default {
         validCharactersOnly: true,
         wrapperClasses: "",
         inputClasses: "",
-      }
+      },
     }
   },
   methods: {
@@ -220,6 +233,50 @@ export default {
 
     removeNBSP(text) {
       return text.replace(/&nbsp;/g, " ")
+    },
+    submitForm: function (event) {
+      this.industryError = !this.profile.recruiterIndustry;
+      this.companyError = !this.profile.recruiterCompany;
+      this.staffError = !this.profile.recruiterStaff;
+      this.descriptionError = !this.profile.recruiterDesc;
+      this.addressError = !this.profile.recruiterAddress;
+      this.websiteError = !this.profile.recruiterWebsite;
+
+      if (this.industryError || this.companyError || this.staffError || this.descriptionError || this.addressError || this.websiteError) {
+        event.preventDefault()
+        if (this.industryError || this.companyError || this.staffError || this.descriptionError || this.addressError || this.websiteError) {
+          let element = document.getElementById("industry")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+        if (this.companyError || this.staffError || this.descriptionError || this.addressError || this.websiteError) {
+          let element = document.getElementById("staff")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+        if (this.companyError || this.descriptionError || this.addressError || this.websiteError) {
+          let element = document.getElementById("company")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+        if (this.descriptionError || this.addressError || this.websiteError) {
+          let element = document.getElementById("description")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+        if (this.addressError || this.websiteError) {
+          let element = document.getElementById("address")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+        if (this.websiteError) {
+          let element = document.getElementById("website")
+          element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        }
+      } else {
+        this.industryError = false;
+        this.staffError = false;
+        this.companyError = false;
+        this.descriptionError = false;
+        this.addressError = false;
+        this.websiteError = false;
+        this.updateProfile();
+      }
     },
     // func edit profile
     async updateProfile() {
@@ -257,6 +314,10 @@ export default {
   background-color: #f3f3f3;
   min-height: 140vh;
 
+}
+
+.error {
+  border: 2px solid red;
 }
 
 h1 {

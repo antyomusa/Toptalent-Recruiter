@@ -21,7 +21,7 @@
           <div class="mx-3 mb-4 pt-4 px-3">
             <h5 class="fw-bold">
               <PuSkeleton circle height="50px">
-                {{visible}} Jobs is Visible
+                {{ visible }} Jobs is Visible
               </PuSkeleton>
 
             </h5>
@@ -43,7 +43,7 @@
 
         <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="mx-3 mb-4 pt-4 px-3">
-            <h5 class="fw-bold">{{hide}} Jobs is Hidden</h5>
+            <h5 class="fw-bold">{{ hide }} Jobs is Hidden</h5>
           </div>
           <!-- <page-loader/> -->
 
@@ -53,7 +53,7 @@
           <div class="d-flex justify-content-center" v-if="hide == '0'">
             <div class="row nav-item text-center" style="margin-top:90px;">
               <h2 class="fw-bold">No Hidden Job</h2>
-              <p class="mb-5">You don’t have any visible job.</p>
+              <p class="mb-5">You don’t have any hidden job.</p>
               <p>Go to side Visible and make your job hidden</p>
             </div>
           </div>
@@ -68,61 +68,59 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import jobcomponentnew from '@/components/JobComponentNew.vue'
-  // import CandidatejobComponent from '@/components/CandidatejobComponent.vue'
-  export default {
-    components: {
-      jobcomponentnew,
-      // CandidatejobComponent
-    },
+import axios from 'axios'
+import jobcomponentnew from '@/components/JobComponentNew.vue'
+// import CandidatejobComponent from '@/components/CandidatejobComponent.vue'
+export default {
+  components: {
+    jobcomponentnew,
+    // CandidatejobComponent
+  },
 
-    data() {
-      return {
-        list: [],
-        hide: '',
-        visible: ''
+  data() {
+    return {
+      list: [],
+      hide: '',
+      visible: ''
 
-      }
-    },
-    methods: {
-      totalHidden() {
-        console.log('agssri')
-        const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
-        axios.get(`https://toptalentapp.com:9091/api/v1/job/hidden/${recruiterId}`)
-          .then((resp) => {
-            this.hide = resp.data.data
-            console.log(this.hide)
-          })
-      },
-      totalVisibility() {
-        console.log('agssri')
-        const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
-        axios.get(`https://toptalentapp.com:9091/api/v1/job/visible/${recruiterId}`)
-          .then((resp) => {
-            this.visible = resp.data.data
-            console.log(this.visible)
-          })
-      },
-      getJobs() {
-        console.log('agroasd')
-        const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
-        axios.get(`https://toptalentapp.com:9091/api/v1/jobs/${recruiterId}`)
-          .then((resp) => {
-            this.list = resp.data
-            console.log(this.list)
-            localStorage.setItem("job-info", JSON.stringify(resp.data));
-          }, 1500)
-      }
-    },
-    mounted() {
-      this.totalHidden();
-      this.getJobs();
-      this.totalVisibility();
     }
+  },
+  methods: {
+    totalHidden() {
+      console.log('agssri')
+      const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
+      axios.get(`https://toptalentapp.com:9091/api/v1/job/hidden/${recruiterId}`)
+        .then((resp) => {
+          this.hide = resp.data.data
+          console.log(this.hide)
+        })
+    },
+    totalVisibility() {
+      console.log('agssri')
+      const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
+      axios.get(`https://toptalentapp.com:9091/api/v1/job/visible/${recruiterId}`)
+        .then((resp) => {
+          this.visible = resp.data.data
+          console.log(this.visible)
+        })
+    },
+    getJobs() {
+      console.log('agroasd')
+      const recruiterId = JSON.parse(localStorage.getItem("user-info")).recruiterId
+      axios.get(`https://toptalentapp.com:9091/api/v1/jobs/${recruiterId}`)
+        .then((resp) => {
+          this.list = resp.data
+          console.log(this.list)
+          localStorage.setItem("job-info", JSON.stringify(resp.data));
+        }, 1500)
+    }
+  },
+  mounted() {
+    this.totalHidden();
+    this.getJobs();
+    this.totalVisibility();
   }
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

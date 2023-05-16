@@ -14,27 +14,31 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="list-unstyled components">
-                
-                <li>
-                    <router-link class="" to="/dashboard"><font-awesome-icon icon="fa-solid fa-house" class="icn" /> Dashboard</router-link>
-                </li>
-                <li>
-                   <router-link class="" to="/postjobNew"><font-awesome-icon icon="fa-solid fa-list" class="icn"/> Post Job</router-link>
-                </li>
-                <li>
-                   <router-link class="" to="/about"><font-awesome-icon icon="fa-solid fa-user" class="icn"/> Company Profile</router-link>
-                </li>
-                <!-- <li>
+
+          <li>
+            <router-link class="" to="/dashboard"><font-awesome-icon icon="fa-solid fa-house" class="icn" />
+              Dashboard</router-link>
+          </li>
+          <li>
+            <router-link class="" to="/postjobNew"><font-awesome-icon icon="fa-solid fa-list" class="icn" /> Post
+              Job</router-link>
+          </li>
+          <li>
+            <router-link class="" to="/about"><font-awesome-icon icon="fa-solid fa-user" class="icn" /> Company
+              Profile</router-link>
+          </li>
+          <!-- <li>
                    <router-link class="" to="/credit"><i class="bi bi-newspaper"></i>Credit</router-link>
                 </li> -->
-                
-            </ul>
+
+        </ul>
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 
         <form class="d-flex flex-row align-items-center">
           <!-- <router-link class="btn btn-outline-primary fw-bold btn-login" to="/login" width>Login</router-link> -->
-          <button v-on:click="logout" class="btn btn-danger mt-5"><font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket"/> Logout</button>
+          <button v-on:click="logout" class="btn btn-danger mt-5"><font-awesome-icon
+              icon="fa-solid fa-arrow-right-from-bracket" /> Logout</button>
           <!-- <router-link class="btn btn-primary"  >user</router-link> -->
           <!-- <a class="btn btn-primary" href="login.html" role="button">Login</a> -->
         </form>
@@ -44,66 +48,69 @@
 </template>
 
 <script>
-  export default {
-    name: "NavMobile",
-    methods:{
-        logout(){
-        try {
+export default {
+  name: "NavMobile",
+  methods: {
+    logout() {
+      try {
         localStorage.removeItem("user-info")
+        localStorage.removeItem("user-profile")
         localStorage.removeItem("job-info")
         localStorage.removeItem("sign-info")
-       
+        localStorage.removeItem("candidateReview-info")
+        localStorage.removeItem("counttotal-info")
+        localStorage.removeItem("countreject-info")
+        localStorage.removeItem("countaccept-info")
+        sessionStorage.setItem("Authenticated", false)
         this.$router.push("/login");
         // createToast("logout success!", { type: "success" });
-        }
-        catch (error) {
-          console.log(error);
-        }
-    
-        }
-    },
-  };
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+  },
+};
 </script>
 
 <style scoped>
-  nav {
-    margin-top: -5px;
+nav {
+  margin-top: -5px;
+}
+
+.btn {
+  width: 145px;
+  padding: 12px;
+  height: auto;
+  border-radius: 30px;
+  margin-left: 30px;
+}
+
+.btn-signup {
+  text-decoration: none;
+}
+
+.btn-login {
+  text-decoration: none;
+}
+
+/* breakpoints */
+/* mobile */
+@media only screen and (max-width: 576px) {
+  .components li {
+    padding: 10px 0;
+
   }
 
-  .btn {
-    width: 145px;
-    padding: 12px;
-    height: auto;
-    border-radius: 30px;
-    margin-left: 30px;
-  }
-
-  .btn-signup{
+  .components li .icn {
     text-decoration: none;
+
   }
 
-  .btn-login{
-    text-decoration: none;
-  }
-
-  /* breakpoints */
-  /* mobile */
-  @media only screen and (max-width: 576px){
-    .components li{
-      padding: 10px 0;
-      
-    }
-
-    .components li .icn{
-      text-decoration: none;
-      
-    }
-
-    #sidebar ul li a {
+  #sidebar ul li a {
     padding: 10px;
     font-weight: 500;
     display: block;
     text-decoration: none;
-}
   }
-</style>
+}</style>
